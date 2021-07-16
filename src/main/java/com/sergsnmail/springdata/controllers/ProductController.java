@@ -3,6 +3,9 @@ package com.sergsnmail.springdata.controllers;
 import com.sergsnmail.springdata.entities.Product;
 import com.sergsnmail.springdata.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,6 +56,12 @@ public class ProductController {
     public List<Product> findAllProductByTitleLike(
             @RequestParam (name="name", defaultValue = "", required = false) String title) {
         return productRepository.findAllByTitleIgnoreCaseLike(String.format("%%%s%%", title));
+    }
+
+    @ResponseBody
+    @RequestMapping("/top/pages/")
+    public List<Product> getAllProductsByPage(@PageableDefault(value=10, page=0) Pageable pageable) {
+        return  productRepository.findAll(pageable).getContent();
     }
 
 }
