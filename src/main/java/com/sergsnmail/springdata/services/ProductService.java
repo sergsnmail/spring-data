@@ -4,6 +4,7 @@ import com.sergsnmail.springdata.entities.DTO.ProductDto;
 import com.sergsnmail.springdata.entities.Product;
 import com.sergsnmail.springdata.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +22,8 @@ public class ProductService {
         return productRepository.findById(id).map(ProductDto::new);
     }
 
-    public List<ProductDto> findAll() {
-        return productRepository.findAll().stream().map(ProductDto::new).collect(Collectors.toList());
+    public List<ProductDto> findAll(Specification<Product> prodSpec) {
+        return productRepository.findAll(prodSpec).stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
     public Product saveOrUpdate(Product product) {
